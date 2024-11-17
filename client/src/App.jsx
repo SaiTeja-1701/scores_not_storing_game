@@ -9,7 +9,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import StartScreen from './StartScreen.jsx';
-import MemoryGame from './Memorygame.jsx';
+import MemoryGame from './pages/Memorygame.jsx';
 import { UserContextProvider } from '../context/userContext';
 import SessionReport from './SessionReports.jsx'
 

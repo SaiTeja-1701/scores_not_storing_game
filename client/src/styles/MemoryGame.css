@@ -1,0 +1,33 @@
+    .card-grid {
+        margin-top: 20px;
+        margin-left: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 20px;
+        /* This sets uniform spacing for both rows and columns */
+    }
+    
+    .stats {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .score,
+    .turns {
+        background-color: #f0f0f0;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 1.2rem;
+        color: #333;
+    }
+    
+    .score {
+        font-weight: bold;
+        color: #FF5722;
+    }
+    
+    .turns {
+        font-weight: bold;
+        color: #03A9F4;
+    }

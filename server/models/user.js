@@ -9,14 +9,10 @@ const userSchema = new Schema({
         sessionId: String,
         loginTime: Date,
         logoutTime: Date,
-        scores: [{
-          score: Number,
-          date: { type: Date, default: Date.now }
-        }]
+        score: Number,
     }]
 });
 
 const UserModel = mongoose.model('User', userSchema);
 
 module.exports = UserModel;
-

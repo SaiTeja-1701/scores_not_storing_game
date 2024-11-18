@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';  // Import axios to send HTTP requests
+import axios from 'axios';
+import confetti from 'canvas-confetti'; // Import canvas-confetti
 import SingleCard from '../components/SingleCard';
 import '../styles/MemoryGame.css';
 
@@ -13,14 +14,16 @@ const cardImages = [
 ];
 
 function MemoryGame() {
-  const [cards, setCards] = useState([]); // current state of cards after shuffling
-  const [turns, setTurns] = useState(0); // track turns count
-  const [choice1, setChoice1] = useState(null); // first card choice
-  const [choice2, setChoice2] = useState(null); // second card choice
-  const [disabled, setDisabled] = useState(false); // disable card clicks during comparison
-  const [score, setScore] = useState(0); // Add a state for score
-  const [userId, setUserId] = useState(localStorage.getItem('userId')); // Assuming userId is stored in localStorage
-  const [sessionId, setSessionId] = useState(localStorage.getItem('sessionId')); // Assuming sessionId is stored in localStorage
+  const [cards, setCards] = useState([]);
+  const [turns, setTurns] = useState(0);
+  const [choice1, setChoice1] = useState(null);
+  const [choice2, setChoice2] = useState(null);
+  const [disabled, setDisabled] = useState(false);
+  const [score, setScore] = useState(0);
+  const [gameCompleted, setGameCompleted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false); // New state to track if the game has started
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+  const [sessionId, setSessionId] = useState(localStorage.getItem('sessionId'));
 
   // Shuffle cards and initialize the game
   const shuffleCards = () => {
@@ -29,37 +32,35 @@ function MemoryGame() {
       .map((card) => ({ ...card, id: Math.random() }));
     setCards(shuffledCards);
     setTurns(0);
-    setScore(0); // Reset score
-    flipAllCardsTemporary(shuffledCards); // Show all cards for 5 seconds
+    setScore(0);
+    setGameCompleted(false);
+    setGameStarted(true); // Set game as started
+    flipAllCardsTemporary(shuffledCards);
   };
 
-  // Flip all cards for 5 seconds when the game starts
+  // Flip all cards temporarily when the game starts
   const flipAllCardsTemporary = (shuffledCards) => {
     setTimeout(() => {
       setCards(shuffledCards.map((card) => ({ ...card, flipped: false })));
-    }, 5000); // Hide the cards after 5 seconds
+    }, 5000);
     setCards(shuffledCards.map((card) => ({ ...card, flipped: true })));
   };
 
   // Handle a choice
   const handleChoice = (card) => {
-    choice1 ? setChoice2(card) : setChoice1(card); // if choice1 has value then the card clicked is set to choice2
+    choice1 ? setChoice2(card) : setChoice1(card);
   };
 
   // Compare 2 selected cards
   useEffect(() => {
     if (choice1 && choice2) {
-      setDisabled(true); // Disable further choices until cards are compared
+      setDisabled(true);
       if (choice1.src === choice2.src) {
-        setCards((prevCards) => {
-          return prevCards.map((card) => {
-            if (card.src === choice1.src) {
-              return { ...card, matched: true };
-            } else {
-              return card;
-            }
-          });
-        });
+        setCards((prevCards) =>
+          prevCards.map((card) =>
+            card.src === choice1.src ? { ...card, matched: true } : card
+          )
+        );
         resetTurn();
       } else {
         setTimeout(() => resetTurn(), 1000);
@@ -67,16 +68,18 @@ function MemoryGame() {
     }
   }, [choice1, choice2]);
 
-  // Calculate score based on turns
+  // Calculate score and check for game completion
   useEffect(() => {
-    const matchedCards = cards.filter(card => card.matched).length;
-    if (matchedCards === cardImages.length * 2) { // All cards are matched
+    const matchedCards = cards.filter((card) => card.matched).length;
+    if (matchedCards === cardImages.length * 2) {
       let finalScore = 10;
       if (turns > 9) {
-        finalScore -= Math.floor((turns - 9) / 2); // Decrease score gradually for turns over 9
+        finalScore -= Math.floor((turns - 9) / 2);
       }
-      setScore(finalScore < 0 ? 0 : finalScore); // Ensure score doesn't go below 0
-      submitScore(finalScore); // Call submitScore when the game is complete
+      setScore(finalScore < 0 ? 0 : finalScore);
+      setGameCompleted(true);
+      launchConfetti();
+      submitScore(finalScore);
     }
   }, [cards, turns]);
 
@@ -89,27 +92,54 @@ function MemoryGame() {
   };
 
   // Submit score to the backend
-  const submitScore = async (finalScore) => {
+  const submitScore = async (Score) => {
     try {
-      const response = await axios.post('http://localhost:8000/add-score', {
+      await axios.post('http://localhost:8000/api/save-score', {
         sessionId,
-        score: finalScore,
-        userId
+        
+        score: Score,
+        userId,
       });
-      console.log('Score saved successfully:', response.data);
+      console.log('Score saved successfully');
     } catch (error) {
       console.error('Error saving score:', error);
     }
+  };
+
+  // Launch confetti when the game is completed
+  const launchConfetti = () => {
+    const duration = 5000; // Increase the duration to 5 seconds
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        startVelocity: 30,
+        spread: 360,
+        gravity: 0.5,
+        scalar: 1.5, // Increase size of confetti
+        colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A5', '#FFD700'],
+        origin: { y: 0.6 },
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    frame();
   };
 
   return (
     <div className="App">
       <div className="header">
         <h1>Magic Match</h1>
-        <button onClick={shuffleCards}>New Game</button>
+        {!gameStarted && !gameCompleted && (
+          <button onClick={shuffleCards}>Start Game</button>
+        )}
         <div className="stats">
           <p className="turns">TURNS: {turns}</p>
-          {score > 0 && <p className="score">SCORE: {score}</p>} {/* Display the score when the game is completed */}
+          {score > 0 && <p className="score">SCORE: {score}</p>}
         </div>
       </div>
 

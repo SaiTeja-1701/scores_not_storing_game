@@ -7,7 +7,7 @@ const test = (req, res) => {
     res.json('It is working');
 };
 
-const registerUser = async (req, res) => {
+const registerUser = async(req, res) => {
     try {
         const { username, email, password } = req.body;
 
@@ -47,7 +47,7 @@ const registerUser = async (req, res) => {
     }
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async(req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -66,16 +66,14 @@ const loginUser = async (req, res) => {
         user.sessions.push({ sessionId, loginTime });
         await user.save();
 
-        jwt.sign(
-            {
+        jwt.sign({
                 username: user.username,
                 email: user.email,
                 id: user._id,
                 loginTime: loginTime.toISOString(),
                 sessionId
             },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' },
+            process.env.JWT_SECRET, { expiresIn: '1h' },
             (err, token) => {
                 if (err) {
                     console.error(err);
@@ -105,14 +103,14 @@ const getProfile = (req, res) => {
     }
 };
 
-const logoutUser = async (req, res) => {
+const logoutUser = async(req, res) => {
     const { token } = req.cookies;
 
     if (!token) {
         return res.status(400).json({ error: 'No token found' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, async(err, decoded) => {
         if (err) {
             console.error(err);
             return res.status(401).json({ error: 'Invalid token' });
@@ -134,7 +132,7 @@ const logoutUser = async (req, res) => {
     });
 };
 
-const saveScore = async (req, res) => {
+const saveScore = async(req, res) => {
     try {
         const { score } = req.body;
         const { token } = req.cookies;
@@ -147,7 +145,7 @@ const saveScore = async (req, res) => {
 
         const currentSession = user.sessions.find(session => session.sessionId === decoded.sessionId);
         if (currentSession) {
-            currentSession.scores.push({ game: 'Memory Game', score });
+            currentSession.score.push(score);
             await user.save();
             res.json({ message: 'Score saved successfully' });
         } else {
@@ -167,4 +165,3 @@ module.exports = {
     logoutUser,
     saveScore
 };
-

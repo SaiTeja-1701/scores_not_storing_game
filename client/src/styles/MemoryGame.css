@@ -1,9 +1,9 @@
     .card-grid {
-        margin-top: 20px;
+        margin-top: 5px;
         margin-left: 10px;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-gap: 20px;
+        grid-gap: 5px;
         /* This sets uniform spacing for both rows and columns */
     }
     
@@ -13,7 +13,8 @@
     }
     
     .score,
-    .turns {
+    .turns,
+    .timer {
         background-color: #f0f0f0;
         padding: 10px 20px;
         border-radius: 5px;
@@ -30,4 +31,10 @@
     .turns {
         font-weight: bold;
         color: #03A9F4;
+    }
+    /* Styling for the timer */
+    
+    .timer {
+        color: rgb(22, 172, 8);
+        font-weight: bold;
     }

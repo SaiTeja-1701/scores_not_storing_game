@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
-import Header from '../src/components/Header';
 import Navbar from '../src/components/Navbar';
 import Home from '../src/pages/Home';
 import Register from './pages/Register';
@@ -40,7 +39,6 @@ function App() {
 
   return (
     <UserContextProvider>
-      <Header />
       <Navbar />
       <Toaster position="center" toastOptions={{ duration: 3000 }} />
       

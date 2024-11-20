@@ -1,0 +1,71 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    /* Align items like logo and links properly */
+    align-items: center;
+    background-color: #0d1117;
+    /* Dark background matching pixel-art themes */
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    /* Add subtle shadow for depth */
+}
+
+.navbar-logo {
+    font-size: 1.8em;
+    color: gold;
+    /* Bright gold for the logo text or icon */
+    font-family: 'Press Start 2P', cursive;
+    /* Retro gaming font */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    /* Shadow effect for retro look */
+    text-decoration: none;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: rgb(244, 17, 17);
+    font-family: 'Press Start 2P', cursive;
+    /* Retro font */
+    font-size: 1em;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: transparent;
+    /* Transparent background */
+    border: 2px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: gold;
+    /* Highlighted link */
+    color: #0d1117;
+    /* Dark text on hover */
+    border: 2px solid gold;
+}
+
+.nav-button {
+    background-color: gold;
+    color: #0d1117;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1em;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: white;
+    color: #0d1117;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.6);
+}

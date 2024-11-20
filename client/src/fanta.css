@@ -2,14 +2,20 @@
 :root {
     --bg-primary: #1b1c36;
     --bg-secondary: #2b2e4a;
-    --color-primary: #f0f0f0;
+    --color-primary: #ffffff;
+    /* Changed to pure white for better contrast */
     --color-accent: #ffcc00;
-    --color-link: #80dfff;
+    --color-link: #00ffff;
+    /* Brighter cyan for better visibility */
+    --color-text: #ffffff;
+    /* Pure white for text */
     --border-primary: #3e4260;
     --radius-small: 0px;
     --radius-large: 0px;
     --gradient-start: #ff5e79;
     --gradient-end: #ffc15e;
+    --background-muted: #444466;
+    /* Darker background for hover effect */
 }
 
 
@@ -20,13 +26,15 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Press Start 2P', cursive;
-    cursor: url('https://example.com/pixel-cursor.png'), auto;
-    /* Use a custom pixel art cursor */
+    cursor: url('/img/cursor.png'), auto;
 }
 
 body {
-    background: var(--bg-primary);
-    color: var(--color-primary);
+    background-image: url('/img/background.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background-position: center center; */
+    color: var(--color-text);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -39,12 +47,13 @@ h2,
 h3,
 h4 {
     font-family: 'Press Start 2P', cursive;
-    color: var(--color-primary);
+    color: purple;
+    /* Pure white for better contrast */
 }
 
 h1 {
     font-size: 1.5rem;
-    color: var(--color-accent);
+    color: purple;
 }
 
 h2 {
@@ -85,6 +94,7 @@ button:hover {
 
 a {
     color: var(--color-link);
+    /* Brighter cyan for links */
     text-decoration: none;
 }
 
@@ -123,7 +133,8 @@ a:hover {
 /* Typography */
 
 .text-gradient {
-    background: linear-gradient(135deg, #ff5e79, #ffc15e);
+    background: linear-gradient(135deg, #00ec72, #ffd700);
+    /* Gold and Dark Purple */
     -webkit-background-clip: text;
     color: transparent;
 }
@@ -139,7 +150,7 @@ select {
     border: 2px solid var(--color-accent);
     border-radius: var(--radius-small);
     background: var(--bg-secondary);
-    color: var(--color-primary);
+    color: rgb(242, 210, 4);
     font-family: 'Press Start 2P', cursive;
 }
 
@@ -179,4 +190,45 @@ th {
     button {
         width: 100%;
     }
+}
+
+
+/* Navbar */
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    background-color: rgb(32, 1, 60);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    /* Ensures the navbar spans the entire width */
+    left: 0;
+    /* Ensures it starts from the very left of the viewport */
+    right: 0;
+    /* Ensures it spans to the very right of the viewport */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds a shadow for better separation */
+}
+
+.nav-link {
+    color: var(--color-link);
+    font-family: "Grenze", serif;
+    font-size: 1.5em;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-small);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgb(253, 208, 6);
+    color: rgb(12, 5, 24);
+}
+
+label {
+    color: rgb(52, 0, 101);
 }

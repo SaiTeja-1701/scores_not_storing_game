@@ -131,11 +131,15 @@ const logoutUser = async(req, res) => {
         res.json({ message: 'Logged out successfully' });
     });
 };
-
 const saveScore = async(req, res) => {
     try {
         const { score } = req.body;
         const { token } = req.cookies;
+
+        if (!token) {
+            return res.status(401).json({ error: 'No token provided' });
+        }
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const user = await User.findById(decoded.id);
@@ -145,7 +149,7 @@ const saveScore = async(req, res) => {
 
         const currentSession = user.sessions.find(session => session.sessionId === decoded.sessionId);
         if (currentSession) {
-            currentSession.score.push(score);
+            currentSession.score = score; // Assign the score directly to the session
             await user.save();
             res.json({ message: 'Score saved successfully' });
         } else {
